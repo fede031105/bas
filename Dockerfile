@@ -2,12 +2,11 @@
 FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 
-# Copiar los archivos de Maven Wrapper y la configuración
-mvnw.cmd pom.xml ./
+# Copiar la carpeta .mvn y los archivos de configuración
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
 
-# Descargar dependencias (para aprovechar el caché de capas)
+# Descargar dependencias (aprovechando el caché de capas)
 RUN ./mvnw dependency:go-offline
 
 # Copiar el código fuente y empaquetar la aplicación
@@ -21,8 +20,8 @@ WORKDIR /app
 # Copiar el JAR generado desde la etapa de compilación
 COPY --from=build /app/target/*.jar app.jar
 
-# Exponer el puerto predeterminado que usa Render (o la variable PORT)
+# Exponer el puerto predeterminado
 EXPOSE 8080
 
-# Comando para ejecutar la aplicac
+# Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
