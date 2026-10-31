@@ -24,5 +24,5 @@ COPY --from=build /app/target/*.jar app.jar
 # Exponer el puerto predeterminado que usa Render (o la variable PORT)
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación
+# Comando para ejecutar la aplicaci
 ENTRYPOINT ["java", "-jar", "app.jar"]
